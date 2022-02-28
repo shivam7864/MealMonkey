@@ -1,0 +1,78 @@
+{% extends 'foodfest/base.html' %}
+
+{% block body%}
+<table class="table table-danger mx-0 my-4">
+    <h1 style="text-align: center;" class="my-3">Your Cart</h1>
+    <thead>
+      <tr>
+        <th scope="col">S.No.</th>
+        <th scope="col">Order Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Track</th>
+        <th scope="col">View Order</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for f in food %}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td>{{f.order_name}}</td>
+        <td>{{f.order_price}}</td>
+        <td> <a href="#" class="btn btn-primary">Track</a></td>
+        <td> <a href="#" class="btn btn-primary">View</a></td>
+        <td> <a href="{% url 'deleteorder' f.order_id %}" class="btn btn-primary">Delete</a></td>
+        
+      </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+  <p>The total cost of your cart is <b>Rs.{{cost}}</b></p>
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+   Place Order
+  </button>
+  
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Fill up the below form to place your order</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="/persondetails" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label mt-3">Enter receiver's name</label>
+              <input type="text" class="form-control" id="exampleFormControlInput1" name="name" required>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label mt-3">Enter mobile number</label>
+              <input type="text" class="form-control" id="exampleFormControlInput1" name="mobile" required>
+            </div>
+  
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label mt-3">Enter receiving point</label>
+              <input type="text" class="form-control" id="exampleFormControlInput1" name="address" required>
+            </div>
+  
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label mt-3">Enter postal id</label>
+              <input type="text" class="form-control" id="exampleFormControlInput1" name="postal" required>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label mt-3">Total price - <b> {{cost}}</b></label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            
+            <button type="submit" class="btn btn-primary">Place Order</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
